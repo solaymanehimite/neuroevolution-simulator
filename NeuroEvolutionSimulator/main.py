@@ -4,6 +4,7 @@ import pygame
 
 from pygame.locals import *
 from organism import Organism
+from utils import *
 
 
 class Game:
@@ -21,7 +22,9 @@ class Game:
     def spawn_organisms(self):
         for i in range(100):
             x, y = random.randint(0, self.grid_size), random.randint(0, self.grid_size)
-            self.map[f"{x}, {y}"] = Organism(pygame.Vector2(x, y), self)
+            self.map[f"{x}, {y}"] = Organism(
+                pygame.Vector2(x, y), self, [generate_gene()]
+            )
 
     def check_events(self):
         for ev in pygame.event.get():
