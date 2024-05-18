@@ -15,6 +15,7 @@ class Game:
         self.clock = pygame.time.Clock()
 
         self.map = {}
+        self.generation_time = 0
         self.grid_size = 60
         self.organism_size = self.screen.get_width() / self.grid_size
         self.spawn_organisms()
@@ -23,7 +24,7 @@ class Game:
         for i in range(100):
             x, y = random.randint(0, self.grid_size), random.randint(0, self.grid_size)
             self.map[f"{x}, {y}"] = Organism(
-                pygame.Vector2(x, y), self, [generate_gene()]
+                pygame.Vector2(x, y), self, generate_genes(4)
             )
 
     def check_events(self):
@@ -33,7 +34,20 @@ class Game:
                 sys.exit()
 
     def update(self):
-        pass
+        for key in self.map:
+            organism = self.map[key]
+            organism.update()
+
+        self.generation_time += 1
+
+        if self.generation_time > 60:
+            new_map = []
+            for key in self.map:
+                organism = self.map[key]
+                if fitness(organism):
+                    new_map.append(organism)
+            self.map = cross_over(self, new_map)
+            self.generation_time = 0
 
     def render(self):
         self.screen.fill((0, 0, 0))
