@@ -14,11 +14,6 @@ def generate_gene():
 def generate_genes(n):
     return [generate_gene() for i in range(n)]
 
-
-def split_list_into_pairs(input_list):
-    return [[input_list[i], input_list[i + 1]] for i in range(0, len(input_list), 2)]
-
-
 def fitness(organism):
     if organism.pos.x > 50:
         return True
