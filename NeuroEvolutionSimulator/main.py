@@ -1,15 +1,27 @@
+import random
 import sys
-
 import pygame
+
 from pygame.locals import *
+from organism import Organism
 
 
 class Game:
 
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((640, 480))
+        self.screen = pygame.display.set_mode((600, 600))
         self.clock = pygame.time.Clock()
+
+        self.map = {}
+        self.grid_size = 60
+        self.organism_size = self.screen.get_width() / self.grid_size
+        self.spawn_organisms()
+
+    def spawn_organisms(self):
+        for i in range(100):
+            x, y = random.randint(0, self.grid_size), random.randint(0, self.grid_size)
+            self.map[f"{x}, {y}"] = Organism(pygame.Vector2(x, y), self)
 
     def check_events(self):
         for ev in pygame.event.get():
@@ -22,6 +34,11 @@ class Game:
 
     def render(self):
         self.screen.fill((0, 0, 0))
+
+        # render organisms
+        for key in self.map:
+            organism = self.map[key]
+            organism.render()
 
         pygame.display.flip()
         self.clock.tick(60)
