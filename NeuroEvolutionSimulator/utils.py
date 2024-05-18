@@ -14,6 +14,7 @@ def generate_gene():
 def generate_genes(n):
     return [generate_gene() for i in range(n)]
 
+
 def fitness(organism):
     if organism.pos.x > 50:
         return True
@@ -22,7 +23,7 @@ def fitness(organism):
 
 def cross_over(game, organisms):
     new_organisms = {}
-    for i in range(100):
+    for i in range(200):
         organism_1 = random.choice(organisms)
         organism_2 = random.choice(organisms)
         new_genes = random.choice([organism_1.genes, organism_2.genes])

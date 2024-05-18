@@ -21,7 +21,7 @@ class Game:
         self.spawn_organisms()
 
     def spawn_organisms(self):
-        for i in range(100):
+        for i in range(200):
             x, y = random.randint(0, self.grid_size), random.randint(0, self.grid_size)
             self.map[f"{x}, {y}"] = Organism(
                 pygame.Vector2(x, y), self, generate_genes(4)
