@@ -7,7 +7,7 @@ class Organism:
 
     def __init__(self, pos, game, genes=False):
         self.game = game
-        self.brain = Brain(genes)
+        self.brain = Brain(3, 4, genes)
         self.genes = genes
         self.pos = pos
 
@@ -24,7 +24,12 @@ class Organism:
         )
 
     def update(self):
-        outputs = self.brain.feed([1])
+        inputs = [
+            1,
+            self.pos.x / (self.game.grid_size - 1),
+            self.pos.y / (self.game.grid_size - 1),
+        ]
+        outputs = self.brain.feed(inputs)
         if outputs[0]:
             self.pos.x += 1
         if outputs[1]:

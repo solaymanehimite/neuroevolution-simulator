@@ -21,10 +21,10 @@ class Game:
         self.spawn_organisms()
 
     def spawn_organisms(self):
-        for i in range(200):
+        for i in range(400):
             x, y = random.randint(0, self.grid_size), random.randint(0, self.grid_size)
             self.map[f"{x}, {y}"] = Organism(
-                pygame.Vector2(x, y), self, generate_genes(4)
+                pygame.Vector2(x, y), self, generate_genes(3 * 4)
             )
 
     def check_events(self):
@@ -40,7 +40,7 @@ class Game:
 
         self.generation_time += 1
 
-        if self.generation_time > 60:
+        if self.generation_time > 120:
             new_map = []
             for key in self.map:
                 organism = self.map[key]
@@ -58,7 +58,7 @@ class Game:
             organism.render()
 
         pygame.display.flip()
-        self.clock.tick(60)
+        # self.clock.tick(60)
 
     def run(self):
         while True:

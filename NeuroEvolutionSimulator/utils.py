@@ -16,17 +16,19 @@ def generate_genes(n):
 
 
 def fitness(organism):
-    if organism.pos.x > 50:
+    if organism.pos.y < 75 and organism.pos.y > 25:
         return True
     return False
 
 
 def cross_over(game, organisms):
     new_organisms = {}
-    for i in range(200):
+    for i in range(400):
         organism_1 = random.choice(organisms)
         organism_2 = random.choice(organisms)
-        new_genes = random.choice([organism_1.genes, organism_2.genes])
+        new_genes = []
+        for gene_1, gene_2 in zip(organism_1.genes, organism_2.genes):
+            new_genes.append(random.choice([gene_1, gene_2]))
         position = pygame.Vector2(
             random.randint(0, game.grid_size), random.randint(0, game.grid_size)
         )

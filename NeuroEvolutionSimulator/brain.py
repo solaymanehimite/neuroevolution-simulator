@@ -2,14 +2,15 @@ import numpy as np
 
 
 class Brain:
-    def __init__(self, genes):
-        self.weights = np.zeros((1, 4))
+    def __init__(self, num_inputs, num_outputs, genes):
+        num_genes = len(genes)
+        self.weights = np.zeros((num_inputs, num_outputs))
         for i, gene in enumerate(genes):
             decimal_value = int(gene, 16)  # Convert hex to decimal
-            normalized_value = decimal_value / (
-                16**6 - 1
-            )  # Scale to be between 0 and 1
-            self.weights[0, i] = normalized_value
+            normalized_value = decimal_value / (16**6 - 1)
+            row_index = i % num_inputs  # Cycling through rows
+            col_index = i % num_outputs  # Cycling through columns
+            self.weights[row_index, col_index] = normalized_value
 
     def step_function(self, x):
         return np.where(x > 0.5, 1, 0)
