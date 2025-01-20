@@ -2,43 +2,45 @@ import random
 import pygame
 from organism import Organism
 
-
 hex_chars = list("1234567890abcdef")
-input_labels = [
-    "x",
-    "y",
-    "tick",
-]
-output_labels = ["right", "left", "down", "up"]
 
 
-def generate_gene():
-    return "".join(random.choice(hex_chars) for i in range(2))
+def generate_genes(n) -> list[str]:
+    return ["".join(random.choice(hex_chars) for i in range(2))
+            for i in range(n)]
 
 
-def generate_genes(n):
-    return [generate_gene() for i in range(n)]
+def fitness(organism) -> int:
+    # put your fitness function right here
+    distance_to_corner = organism.pos.distance_to(pygame.Vector2(60, 60))
+
+    score = 1 - (distance_to_corner / 60)
+    return score
 
 
-def fitness(organism):
-    if organism.pos.y > 50 and organism.pos.x > 50:
-        return True
-    return False
+def cross_over(game, organisms) -> list[Organism]:
 
+    if len(organisms) == 0:
+        raise Exception("cannot reproduce 0 organisms")
 
-def cross_over(game, organisms):
-    new_organisms = {}
+    new_organisms = []
+
     for i in range(100):
-        organism_1 = random.choice(organisms)
-        organism_2 = random.choice(organisms)
+        parents = random.choices(organisms, k=2)
         new_genes = []
-        for gene_1, gene_2 in zip(organism_1.genes, organism_2.genes):
-            if random.randint(0, 20) == 0:
-                new_genes.append(random.choice([gene_1, gene_2])[::-1])
-            new_genes.append(random.choice([gene_1, gene_2]))
+
+        for g1, g2 in zip(parents[0].genes, parents[1].genes):
+
+            if random.randint(0, 5) == 5:
+                new_genes.append(random.choice([g1, g2])[::-1])
+            else:
+                new_genes.append(random.choice([g1, g2]))
+
         position = pygame.Vector2(
-            random.randint(0, game.grid_size), random.randint(0, game.grid_size)
+            random.randint(0, game.grid_size),
+            random.randint(0, game.grid_size)
         )
-        new_organisms[i] = Organism(position, game, new_genes)
+
+        new_organisms.append(Organism(position, game, new_genes))
 
     return new_organisms
