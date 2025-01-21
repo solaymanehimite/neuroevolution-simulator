@@ -5,7 +5,7 @@ import random
 from organism import Organism
 from ui_manager import UiManager
 from utils import cross_over, fitness, generate_genes
-from pygame.locals import QUIT, KEYDOWN, K_SPACE, SRCALPHA
+from pygame.locals import QUIT, KEYDOWN, K_SPACE, SRCALPHA, K_TAB
 
 
 class Game:
@@ -66,6 +66,8 @@ class Game:
             if ev.type == KEYDOWN:
                 if ev.key == K_SPACE:
                     self.running = not self.running
+                if ev.key == K_TAB:
+                    self.ui_manager.toggle_info_panel()
 
     def regerenate_organisms(self):
         self.generation_time = 0
@@ -84,6 +86,8 @@ class Game:
 
         if self.generation_time > 120:
             self.regerenate_organisms()
+
+        self.ui_manager.update()
 
     def render(self):
         self.screen.fill((0, 0, 0))

@@ -1,4 +1,5 @@
 import pygame
+from panel import Panel
 
 
 class UiManager:
@@ -8,8 +9,21 @@ class UiManager:
         self.char_width, self.char_height = self.font.size("A")
         self.line_spacing = 4
 
+        self.info_panel = Panel(pygame.Vector2(0, 0), pygame.Vector2(
+            200, 400), pygame.Color(20, 20, 20))
+
+    def toggle_info_panel(self):
+        if self.info_panel.target_position.x == -200:
+            self.info_panel.target_position.x = 0
+        else:
+            self.info_panel.target_position.x = -200
+
     def render(self, surface: pygame.Surface):
+        self.info_panel.render(surface)
         self.render_mouse(surface)
+
+    def update(self):
+        self.info_panel.update()
 
     def render_text(self, surface: pygame.Surface, text: str,
                     position: pygame.Vector2, color: pygame.Color):
