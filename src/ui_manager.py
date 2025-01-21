@@ -2,6 +2,13 @@ import pygame
 from panel import Panel
 
 
+def render_info_panel(font: pygame.font.Font):
+    return lambda panel: panel.render_text(font,
+                                           "hello world",
+                                           pygame.Color(255, 255, 255),
+                                           pygame.Vector2(10, 10))
+
+
 class UiManager:
 
     def __init__(self):
@@ -10,7 +17,8 @@ class UiManager:
         self.line_spacing = 4
 
         self.info_panel = Panel(pygame.Vector2(0, 0), pygame.Vector2(
-            200, 400), pygame.Color(20, 20, 20))
+            200, 400), pygame.Color(20, 20, 20)) \
+            .set_render_function(render_info_panel(self.font))
 
     def toggle_info_panel(self):
         if self.info_panel.target_position.x == -200:
