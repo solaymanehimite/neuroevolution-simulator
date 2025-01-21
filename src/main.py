@@ -21,10 +21,12 @@ class Game:
         # game props
         self.generation_time = 0
         self.generation = 0
+        self.succes_rate = 0
+        self.score_sum = 0
         self.grid_size = 60
         self.organism_size = 600 / self.grid_size
         self.lifespan = 120
-        self.organism_count = 200
+        self.organism_count = 150
         self.genes_count = 12
 
         self.map = []
@@ -51,7 +53,7 @@ class Game:
         return overlay.convert_alpha()
 
     def spawn_organisms(self):
-        for i in range(100):
+        for i in range(150):
             x, y = [random.randint(0, self.grid_size),
                     random.randint(0, self.grid_size)]
 
@@ -81,6 +83,14 @@ class Game:
         self.map = cross_over(self, new_map)
 
     def update(self):
+        self.ui_manager.simulation_info["gen"] = self.generation
+        self.ui_manager.simulation_info["scs"] = int((
+            self.succes_rate / self.organism_count) * 100)
+        self.ui_manager.simulation_info["scr"] = f"{self.score_sum / self.organism_count:0.2f}"
+
+        self.succes_rate = 0
+        self.score_sum = 0
+
         if self.running:
             self.generation_time += 1
 
@@ -95,6 +105,9 @@ class Game:
         for organism in self.map:
             if self.running:
                 organism.update()
+            self.score_sum += fitness(organism)
+            if fitness(organism) > 0.5:
+                self.succes_rate += 1
             organism.render()
 
         self.screen.blit(self.overlay, (0, 0))

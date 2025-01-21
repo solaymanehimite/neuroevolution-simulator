@@ -12,9 +12,8 @@ def generate_genes(n) -> list[str]:
 
 def fitness(organism) -> int:
     # put your fitness function right here
-    distance_to_corner = organism.pos.distance_to(pygame.Vector2(60, 60))
-
-    score = 1 - (distance_to_corner / 60)
+    distance_to_corner = 60 - organism.pos.x
+    score = 1 - (distance_to_corner / 30)
     return score
 
 
@@ -25,13 +24,13 @@ def cross_over(game, organisms) -> list[Organism]:
 
     new_organisms = []
 
-    for i in range(100):
+    for i in range(150):
         parents = random.choices(organisms, k=2)
         new_genes = []
 
         for g1, g2 in zip(parents[0].genes, parents[1].genes):
 
-            if random.randint(0, 5) == 5:
+            if random.randint(0, 50) == 5:
                 new_genes.append(random.choice([g1, g2])[::-1])
             else:
                 new_genes.append(random.choice([g1, g2]))
