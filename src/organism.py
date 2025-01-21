@@ -20,6 +20,7 @@ class Organism:
         self.color = Color("#" + self.hex_color)
 
     def render(self):
+        mouse_position = pygame.mouse.get_pos()
         pygame.draw.rect(
             self.game.screen,
             (255, 255, 255) if not self.genes else self.color,
@@ -30,6 +31,15 @@ class Organism:
                 self.game.organism_size - 2,
             ),
         )
+        rect = Rect(
+            self.pos.x * self.game.organism_size + 1,
+            self.pos.y * self.game.organism_size + 1,
+            self.game.organism_size - 2,
+            self.game.organism_size - 2,
+        )
+        if rect.collidepoint(mouse_position[0], mouse_position[1]):
+            pygame.draw.circle(self.game.screen, self.color,
+                               rect.center, 10, 2)
 
     def render_brain(self) -> Surface:
         neuron_radius = 8
@@ -39,7 +49,8 @@ class Organism:
             (
                 neuron_radius * 4 + weight_length,
                 (neuron_radius * 2 + neuron_padding)
-                * max(self.brain.weights.shape[0], self.brain.weights.shape[1]),
+                * max(self.brain.weights.shape[0],
+                      self.brain.weights.shape[1]),
             )
         )
 
@@ -82,7 +93,8 @@ class Organism:
         for i in range(self.brain.weights.shape[0]):
             for j in range(self.brain.weights.shape[1]):
                 weight_color = (
-                    (0, 255, 0) if self.brain.weights[i, j] > 0.5 else (255, 0, 0)
+                    (0, 255, 0) if self.brain.weights[i, j] > 0.5 else (
+                        255, 0, 0)
                 )
                 draw.line(
                     surface,
