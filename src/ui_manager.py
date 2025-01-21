@@ -4,7 +4,7 @@ import pygame
 class UiManager:
 
     def __init__(self):
-        self.font = pygame.font.Font("res/Monocraft.ttf", 18)
+        self.font = pygame.font.Font("../res/Monocraft.ttf", 18)
         self.char_width, self.char_height = self.font.size("A")
         self.line_spacing = 4
 
